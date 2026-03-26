@@ -2,879 +2,205 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HubCoin Miner - Season 2</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-        :root {
-            --bg-light: #F8FAFC;
-            --card-bg: #FFFFFF;
-            --primary-orange: #FF7E06;
-            --primary-orange-light: #FFF0E2;
-            --primary-green: #00B368;
-            --primary-green-light: #E6F7F0;
-            --text-dark: #1E293B;
-            --text-gray: #64748B;
-            --border-color: #E2E8F0;
-            --accent-purple: #8B5CF6;
-            --accent-cyan: #06B6D4;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Falling Particles Animation */
-        @keyframes fall {
-            to {
-                transform: translateY(100vh) rotateZ(360deg);
-                opacity: 0;
-            }
-        }
-
-        @keyframes float-up {
-            0% {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(255, 126, 6, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 40px rgba(255, 126, 6, 0.6);
-            }
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: -1000px 0;
-            }
-            100% {
-                background-position: 1000px 0;
-            }
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        @keyframes slide-in-left {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slide-in-right {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes fade-in {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes rotate-spin {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        body {
-            background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 50%, #E0E7FF 100%);
-            color: var(--text-dark);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 20px 15px;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* Falling Coins Background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: -10%;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .falling-particle {
-            position: fixed;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.08;
-            font-size: 30px;
-        }
-
-        /* Mobile App Container */
-        .app-container {
-            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(255, 255, 255, 0.9) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(226, 232, 240, 0.6);
-            width: 100%;
-            max-width: 400px;
-            border-radius: 28px;
-            padding: 25px 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 0 60px rgba(255, 126, 6, 0.08);
-            position: relative;
-            overflow: hidden;
-            z-index: 10;
-            animation: float-up 0.6s ease-out;
-        }
-
-        .app-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255, 126, 6, 0.08) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: rotate-spin 15s linear infinite;
-        }
-
-        .app-container::after {
-            content: '';
-            position: absolute;
-            bottom: -50%;
-            left: -50%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: rotate-spin 20s linear infinite reverse;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            animation: float-up 0.8s ease-out;
-            position: relative;
-            z-index: 2;
-        }
-
-        .status-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
-            color: #EF4444;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            animation: fade-in 1s ease-out 0.1s both;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
-        }
-
-        .header h1 {
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--text-dark);
-            line-height: 1.2;
-            animation: slide-in-left 0.8s ease-out 0.2s both;
-        }
-        
-        .header h1 span {
-            background: linear-gradient(135deg, var(--primary-orange), #FF5E00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: inline-block;
-            animation: pulse-glow 2s ease-in-out infinite;
-        }
-
-        .header p {
-            font-size: 14px;
-            color: var(--text-gray);
-            margin-top: 8px;
-            animation: fade-in 1s ease-out 0.3s both;
-        }
-
-        /* Trust/Safe Box - Green Theme */
-        .safe-box {
-            background: linear-gradient(135deg, var(--primary-green-light) 0%, rgba(0, 179, 104, 0.05) 100%);
-            border: 1.5px solid var(--primary-green);
-            border-radius: 16px;
-            padding: 14px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 25px;
-            animation: slide-in-right 0.8s ease-out 0.3s both;
-            position: relative;
-            z-index: 2;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-
-        .safe-box::before {
-            content: '';
-            position: absolute;
-            top: -100%;
-            left: -100%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        .safe-box:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 179, 104, 0.15);
-        }
-
-        .safe-box i {
-            color: var(--primary-green);
-            font-size: 20px;
-            animation: bounce 2s ease-in-out infinite;
-        }
-
-        .safe-box div h4 {
-            color: var(--primary-green);
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .safe-box div p {
-            color: #047857;
-            font-size: 11px;
-            margin-top: 2px;
-        }
-
-        /* Timer Section - Orange Theme */
-        .timer-wrapper {
-            background: linear-gradient(135deg, var(--primary-orange-light) 0%, rgba(255, 126, 6, 0.05) 100%);
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            border: 1.5px solid var(--primary-orange);
-            animation: float-up 0.8s ease-out 0.4s both;
-            position: relative;
-            z-index: 2;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(255, 126, 6, 0.12);
-            transition: all 0.3s ease;
-        }
-
-        .timer-wrapper:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 40px rgba(255, 126, 6, 0.15);
-        }
-
-        .timer-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -100%;
-            left: -100%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        .timer-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--primary-orange);
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            animation: fade-in 1s ease-out 0.5s both;
-        }
-
-        .timer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .time-box {
-            background: linear-gradient(135deg, rgba(255, 126, 6, 0.08), rgba(255, 126, 6, 0.03));
-            border: 1px solid rgba(255, 126, 6, 0.2);
-            border-radius: 12px;
-            padding: 10px 5px;
-            box-shadow: 0 4px 15px rgba(255, 126, 6, 0.08);
-            transition: all 0.3s ease;
-            animation: fade-in 0.6s ease-out 0.5s both;
-            backdrop-filter: blur(5px);
-        }
-
-        .time-box:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(255, 126, 6, 0.15);
-            border-color: rgba(255, 126, 6, 0.4);
-        }
-
-        .time-box span {
-            display: block;
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--text-dark);
-        }
-
-        .time-box label {
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--text-gray);
-            text-transform: uppercase;
-        }
-
-        /* Accordion: What's this update? */
-        .update-accordion {
-            background: linear-gradient(135deg, rgba(248, 250, 252, 0.8), rgba(241, 245, 249, 0.6));
-            border: 1px solid rgba(226, 232, 240, 0.6);
-            border-radius: 16px;
-            margin-bottom: 25px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            animation: float-up 0.8s ease-out 0.5s both;
-            position: relative;
-            z-index: 2;
-            backdrop-filter: blur(5px);
-        }
-
-        .update-accordion:hover {
-            border-color: rgba(255, 126, 6, 0.3);
-            box-shadow: 0 8px 25px rgba(255, 126, 6, 0.08);
-        }
-
-        .accordion-header {
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 15px;
-            color: var(--text-dark);
-            transition: all 0.3s ease;
-        }
-
-        .accordion-header:hover {
-            color: var(--primary-orange);
-        }
-
-        .accordion-header i {
-            color: var(--primary-orange);
-            transition: transform 0.3s ease;
-        }
-
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            background: linear-gradient(135deg, rgba(241, 245, 249, 0.5), rgba(248, 250, 252, 0.3));
-            border-top: 1px solid transparent;
-        }
-
-        .update-accordion.active .accordion-content {
-            max-height: 250px;
-            border-top: 1px solid rgba(255, 126, 6, 0.15);
-            animation: float-up 0.4s ease-out;
-        }
-
-        .update-accordion.active .accordion-header i {
-            transform: rotate(180deg);
-            color: var(--accent-purple);
-        }
-
-        .feature-list {
-            padding: 15px;
-            list-style: none;
-        }
-
-        .feature-list li {
-            font-size: 13px;
-            color: var(--text-gray);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            animation: slide-in-left 0.5s ease-out backwards;
-            transition: all 0.3s ease;
-        }
-
-        .update-accordion.active .feature-list li {
-            animation: slide-in-left 0.5s ease-out forwards;
-        }
-
-        .feature-list li:nth-child(1) { animation-delay: 0.1s; }
-        .feature-list li:nth-child(2) { animation-delay: 0.2s; }
-        .feature-list li:nth-child(3) { animation-delay: 0.3s; }
-        .feature-list li:nth-child(4) { animation-delay: 0.4s; }
-
-        .feature-list li i {
-            color: var(--primary-green);
-        }
-
-        .feature-list li:hover {
-            transform: translateX(5px);
-            color: var(--primary-orange);
-        }
-
-        .feature-list li:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Action Buttons */
-        .action-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border-radius: 14px;
-            font-size: 15px;
-            font-weight: 700;
-            text-align: center;
-            text-decoration: none;
-            cursor: pointer;
-            border: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            animation: float-up 0.8s ease-out 0.6s both;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transform: rotate(45deg);
-            animation: shimmer 3s infinite;
-        }
-
-        .btn:active {
-            transform: scale(0.95);
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-        }
-
-        .btn-telegram {
-            background: linear-gradient(135deg, var(--primary-orange), #FF5E00);
-            color: white;
-            box-shadow: 0 6px 25px rgba(255, 126, 6, 0.4);
-        }
-
-        .btn-telegram:hover {
-            box-shadow: 0 10px 40px rgba(255, 126, 6, 0.6);
-            transform: translateY(-4px);
-        }
-
-        .btn-vote {
-            background: linear-gradient(135deg, rgba(226, 232, 240, 0.5), rgba(226, 232, 240, 0.2));
-            color: var(--text-dark);
-            border: 2px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .btn-vote:hover {
-            border-color: var(--primary-orange);
-            background: rgba(255, 126, 6, 0.08);
-            color: var(--primary-orange);
-        }
-
-        /* Bottom Sheet Modal (For Voting) */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(4px);
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .bottom-sheet {
-            background: linear-gradient(135deg, var(--card-bg) 0%, rgba(255, 255, 255, 0.95) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(226, 232, 240, 0.6);
-            width: 100%;
-            max-width: 400px;
-            border-radius: 28px 28px 0 0;
-            padding: 30px 20px;
-            transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: float-up 0.6s ease-out;
-        }
-
-        .modal-overlay.show .bottom-sheet {
-            transform: translateY(0);
-            animation: float-up 0.4s ease-out;
-        }
-
-        .sheet-header {
-            text-align: center;
-            margin-bottom: 25px;
-            animation: float-up 0.6s ease-out 0.1s both;
-        }
-
-        .sheet-header h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
-            color: var(--text-dark);
-        }
-
-        .sheet-header p {
-            font-size: 14px;
-            color: var(--text-gray);
-        }
-
-        .vote-options {
-            display: flex;
-            gap: 12px;
-            animation: float-up 0.6s ease-out 0.2s both;
-        }
-
-        .btn-yes, .btn-no {
-            position: relative;
-            overflow: hidden;
-            animation: pulse-glow 2s ease-in-out infinite;
-        }
-
-        .btn-yes { 
-            background: linear-gradient(135deg, var(--primary-green), #059669);
-            color: white;
-        }
-
-        .btn-no { 
-            background: linear-gradient(135deg, #EF4444, #DC2626);
-            color: white;
-        }
-
-        .vote-success {
-            text-align: center;
-            display: none;
-            animation: float-up 0.6s ease-out;
-        }
-
-        .vote-success i {
-            font-size: 40px;
-            color: var(--primary-green);
-            margin-bottom: 10px;
-            animation: bounce 1.5s ease-in-out infinite;
-        }
-
-        /* Footer Styling */
-        .footer {
-            text-align: center;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-            animation: float-up 1s ease-out 0.7s both;
-            position: relative;
-            z-index: 2;
-        }
-
-        .footer p {
-            font-size: 12px;
-            color: var(--text-gray);
-            margin: 0;
-        }
-
-        .footer a {
-            color: var(--primary-orange);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            position: relative;
-            display: inline-block;
-        }
-
-        .footer a:hover {
-            color: var(--accent-cyan);
-        }
-
-    </style>
+    <!-- Mobile Native App Viewport Lock -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Money Empire - Pro Version</title>
+    <!-- Premium Font: Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
+    <div id="app">
+        <!-- Ambient Background Glows -->
+        <div class="ambient-glow glow-1"></div>
+        <div class="ambient-glow glow-2"></div>
 
-    <div class="app-container">
-        
-        <!-- Header Section -->
-        <div class="header">
-            <div class="status-badge">● Season 1 Ended</div>
-            <h1>HubCoin Miner<br><span>Season 2</span></h1>
-            <p>A massive upgrade is on the way!</p>
-        </div>
-
-        <!-- Safe Balance Notice -->
-        <div class="safe-box">
-            <i class="fa-solid fa-shield-check"></i>
-            <div>
-                <h4>Your Balance is Safe!</h4>
-                <p>Funds & Referrals will migrate to Season 2.</p>
-            </div>
-        </div>
-
-        <!-- Timer Section -->
-        <div class="timer-wrapper">
-            <div class="timer-title">Launching in</div>
-            <div class="timer-grid">
-                <div class="time-box">
-                    <span id="days">00</span>
-                    <label>Days</label>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Home Page -->
+            <section id="home" class="page active">
+                <div class="header-top">
+                    <div class="user-greeting">
+                        <img id="user-avatar-mini" src="https://via.placeholder.com/40" alt="Avatar">
+                        <div>
+                            <p>Welcome back,</p>
+                            <h3 id="user-name">Loading...</h3>
+                        </div>
+                    </div>
+                    <div class="notif-icon">🔔</div>
                 </div>
-                <div class="time-box">
-                    <span id="hours">00</span>
-                    <label>Hours</label>
-                </div>
-                <div class="time-box">
-                    <span id="minutes">00</span>
-                    <label>Mins</label>
-                </div>
-                <div class="time-box">
-                    <span id="seconds">00</span>
-                    <label>Secs</label>
-                </div>
-            </div>
-        </div>
 
-        <!-- What's this update? (Accordion) -->
-        <div class="update-accordion" id="updateAccordion">
-            <div class="accordion-header" onclick="toggleAccordion()">
-                <span><i class="fa-solid fa-circle-info" style="color:var(--text-gray); margin-right:8px;"></i> What's this update?</span>
-                <i class="fa-solid fa-chevron-down"></i>
-            </div>
-            <div class="accordion-content">
-                <ul class="feature-list">
-                    <li><i class="fa-solid fa-rocket"></i> Extra Earning Opportunities</li>
-                    <li><i class="fa-solid fa-bolt"></i> 2x Mining Speed Boost</li>
-                    <li><i class="fa-solid fa-gift"></i> New Daily Task Rewards</li>
-                    <li><i class="fa-solid fa-wallet"></i> Faster Withdrawals</li>
-                </ul>
-            </div>
-        </div>
+                <div class="balance-cards">
+                    <div class="balance-card premium">
+                        <div class="card-shine"></div>
+                        <div class="card-header">
+                            <p>Total Balance</p>
+                            <h2 class="main-balance"><span id="usdt-balance">0.00</span> <small>USDT</small></h2>
+                        </div>
+                        <div class="balance-grid">
+                            <div class="balance-item">
+                                <div class="balance-icon">🪙</div>
+                                <div class="balance-details">
+                                    <span class="balance-amount" id="coin-balance">0</span>
+                                    <span class="balance-label">Coins</span>
+                                </div>
+                            </div>
+                            <div class="balance-item">
+                                <div class="balance-icon">⭐</div>
+                                <div class="balance-details">
+                                    <span class="balance-amount" id="star-balance">0</span>
+                                    <span class="balance-label">Stars</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Action Buttons -->
-        <div class="action-group">
-            <a href="https://t.me/HubCoin_miner" target="_blank" class="btn btn-telegram">
-                <i class="fa-brands fa-telegram"></i> Join for Updates
-            </a>
-            <button class="btn btn-vote" onclick="openVoteSheet()">
-                <i class="fa-solid fa-check-to-slot"></i> Vote Your Opinion
+                <div class="quick-actions">
+                    <button class="action-btn" data-action="earn">
+                        <div class="icon-wrap bg-blue">🔥</div>
+                        <span>Earn</span>
+                    </button>
+                    <button class="action-btn" data-action="withdraw">
+                        <div class="icon-wrap bg-green">💸</div>
+                        <span>Withdraw</span>
+                    </button>
+                    <button class="action-btn" data-action="invite">
+                        <div class="icon-wrap bg-purple">👥</div>
+                        <span>Invite</span>
+                    </button>
+                    <button class="action-btn" id="spin-btn-home">
+                        <div class="icon-wrap bg-gold">🎁</div>
+                        <span>Spin</span>
+                    </button>
+                </div>
+
+                <div class="section-title">
+                    <h3>Featured Offers</h3>
+                </div>
+                <div class="banner-slider">
+                    <div class="slider-container">
+                        <div class="slide active"><div class="dummy-banner bg-gradient-1">🚀 Invite 5 friends & get 500 Coins!</div></div>
+                        <div class="slide"><div class="dummy-banner bg-gradient-2">💎 Premium Tasks unlocked today!</div></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Friends Page -->
+            <section id="friends" class="page">
+                <div class="page-header">
+                    <h2>Invite & Earn</h2>
+                    <p>Get 100 Coins per friend</p>
+                </div>
+                <div class="referral-card">
+                    <p class="label">Your Unique Link</p>
+                    <div class="referral-link">
+                        <input type="text" id="referral-link" readonly>
+                        <button id="copy-link">Copy</button>
+                    </div>
+                </div>
+                <div class="milestones">
+                    <h3>Milestones</h3>
+                    <div class="milestone-list" id="milestone-list"></div>
+                </div>
+            </section>
+
+            <!-- Earn Page -->
+            <section id="earn" class="page">
+                <div class="page-header">
+                    <h2>Task Center</h2>
+                    <p>Complete tasks to earn more</p>
+                </div>
+                <div class="earn-tabs">
+                    <button class="tab-btn active" data-tab="social">Social</button>
+                    <button class="tab-btn" data-tab="daily">Daily</button>
+                    <button class="tab-btn" data-tab="offerwall">Offers</button>
+                    <button class="tab-btn" data-tab="ads">Ads</button>
+                </div>
+                <div class="tasks-container">
+                    <div id="social-tasks" class="task-list active"></div>
+                    <div id="daily-tasks" class="task-list"></div>
+                    <div id="offerwall-tasks" class="task-list"></div>
+                    <div id="ads-tasks" class="task-list"></div>
+                </div>
+            </section>
+
+            <!-- Profile Page -->
+            <section id="profile" class="page">
+                <div class="profile-header-card">
+                    <img id="user-avatar" src="https://via.placeholder.com/80" alt="Avatar">
+                    <h2 id="profile-name">User Name</h2>
+                    <p id="user-level" class="badge">Level 1</p>
+                </div>
+
+                <div class="gamification">
+                    <div class="streak-card">
+                        <h3>🔥 Streak</h3>
+                        <div class="streak-count"><span id="streak-count">0</span> days</div>
+                    </div>
+                </div>
+
+                <div class="profile-menu">
+                    <button class="menu-item" data-menu="history">
+                        <span class="menu-icon">📜</span>
+                        <span class="menu-text">Transaction History</span>
+                        <span class="arrow">›</span>
+                    </button>
+                    <button class="menu-item" data-menu="theme">
+                        <span class="menu-icon">🎨</span>
+                        <span class="menu-text">App Theme</span>
+                        <span class="arrow">›</span>
+                    </button>
+                </div>
+                <div class="history-panel" id="history-panel" style="display: none;">
+                    <h3>Recent Transactions</h3>
+                    <div class="transaction-list" id="transaction-list"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Floating Navigation -->
+        <nav class="nav-bar">
+            <button class="nav-btn active" data-page="home">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">Home</span>
             </button>
-        </div>
+            <button class="nav-btn" data-page="friends">
+                <span class="nav-icon">👥</span>
+                <span class="nav-text">Friends</span>
+            </button>
+            <button class="nav-btn" data-page="earn">
+                <span class="nav-icon">🎯</span>
+                <span class="nav-text">Earn</span>
+            </button>
+            <button class="nav-btn" data-page="profile">
+                <span class="nav-icon">👤</span>
+                <span class="nav-text">Profile</span>
+            </button>
+        </nav>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>Powered by <a href="https://t.me/hidden169" target="_blank">AgenX Team</a></p>
-        </div>
-
-    </div>
-
-    <!-- Bottom Sheet Modal for Voting -->
-    <div class="modal-overlay" id="voteModal" onclick="closeVoteSheet(event)">
-        <div class="bottom-sheet" onclick="event.stopPropagation()">
-            
-            <div id="voteQuestionBlock">
-                <div class="sheet-header">
-                    <h3>Season 2 or Season 1? 🤔</h3>
-                    <p>Are you excited for HubCoin Season 2, or did you like Season 1 better?</p>
-                </div>
-                <div class="vote-options">
-                    <button class="btn btn-yes" onclick="submitVote('yes')">Yes, I want S2! </button>
-                    <button class="btn btn-no" onclick="submitVote('no')">No, I like S1</button>
-                </div>
+        <!-- Withdraw Modal -->
+        <div id="withdraw-modal" class="modal">
+            <div class="modal-content glass-card">
+                <button class="modal-close" data-modal="withdraw-modal">&times;</button>
+                <h3>Withdraw Funds</h3>
+                <form id="withdraw-form">
+                    <div class="form-group">
+                        <label>Amount (USDT)</label>
+                        <input type="number" id="withdraw-amount" placeholder="Enter amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Wallet Address (TRC20)</label>
+                        <input type="text" id="withdraw-address" placeholder="T..." required>
+                    </div>
+                    <div class="fee-info">Fee: <span id="withdraw-fee">0</span> Stars</div>
+                    <button type="submit" class="btn-primary">Confirm Withdraw</button>
+                </form>
             </div>
-
-            <div id="voteAlreadyBlock" style="display: none; text-align: center;">
-                <i class="fa-solid fa-circle-check" style="font-size: 40px; color: var(--primary-green); margin-bottom: 10px;"></i>
-                <h3 style="margin-top: 10px;">You Already Voted! ✅</h3>
-                <p style="color: var(--text-gray); font-size: 14px; margin-top:10px; margin-bottom: 20px;">Thank you for your valuable feedback. You can only vote once.</p>
-                <button class="btn btn-vote" onclick="closeVoteSheet(true)">Close</button>
-            </div>
-
-            <div id="voteSuccessBlock" class="vote-success">
-                <i class="fa-solid fa-circle-check"></i>
-                <h3>Thanks for Voting!</h3>
-                <p style="color: var(--text-gray); font-size: 14px; margin-top:5px; margin-bottom: 20px;">Your feedback helps us improve.</p>
-                <button class="btn btn-vote" onclick="closeVoteSheet(true)">Close</button>
-            </div>
-
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script>
-        // --- 0. Falling Coins Animation ---
-        function createFallingParticles() {
-            const particles = ['💰', '🪙', '✨', '⭐', '💎'];
-            const container = document.body;
-
-            function createParticle() {
-                const particle = document.createElement('div');
-                const randomParticle = particles[Math.floor(Math.random() * particles.length)];
-                particle.textContent = randomParticle;
-                particle.classList.add('falling-particle');
-                
-                const randomLeft = Math.random() * 100;
-                const randomDuration = 8 + Math.random() * 4; // 8-12 seconds
-                const randomDelay = Math.random() * 2;
-                
-                particle.style.left = randomLeft + '%';
-                particle.style.animation = `fall ${randomDuration}s linear ${randomDelay}s infinite`;
-                particle.style.opacity = Math.random() * 0.2 + 0.05;
-                
-                container.appendChild(particle);
-            }
-
-            // Create initial particles
-            for (let i = 0; i < 8; i++) {
-                createParticle();
-            }
-
-            // Add new particles periodically
-            setInterval(() => {
-                if(document.querySelectorAll('.falling-particle').length < 15) {
-                    createParticle();
-                }
-            }, 3000);
-        }
-
-        // Initialize falling particles
-        createFallingParticles();
-
-        // --- 1. Countdown Timer Logic ---
-        // Set to March 10, 12:00 PM (Ensure you put the correct upcoming year, e.g., 2024 or 2025)
-        const targetDate = new Date("March 10, 2026 12:00:00").getTime();
-
-        const timerInterval = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-
-            if (distance < 0) {
-                clearInterval(timerInterval);
-                return; // Optionally show "Launched" text here
-            }
-
-            document.getElementById("days").innerText = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
-            document.getElementById("hours").innerText = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-            document.getElementById("minutes").innerText = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-            document.getElementById("seconds").innerText = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
-        }, 1000);
-
-        // --- 2. Accordion Logic ---
-        function toggleAccordion() {
-            const accordion = document.getElementById('updateAccordion');
-            accordion.classList.toggle('active');
-        }
-
-        // --- 3. Vote Bottom Sheet Logic ---
-        const modal = document.getElementById('voteModal');
-        const questionBlock = document.getElementById('voteQuestionBlock');
-        const successBlock = document.getElementById('voteSuccessBlock');
-        const alreadyVotedBlock = document.getElementById('voteAlreadyBlock');
-
-        function openVoteSheet() {
-            // Check if user has already voted
-            const hasVoted = localStorage.getItem('hubcoinVoted');
-            
-            if (hasVoted) {
-                // User already voted - show already voted message
-                questionBlock.style.display = 'none';
-                successBlock.style.display = 'none';
-                alreadyVotedBlock.style.display = 'block';
-            } else {
-                // User hasn't voted yet - show voting options
-                questionBlock.style.display = 'block';
-                successBlock.style.display = 'none';
-                alreadyVotedBlock.style.display = 'none';
-            }
-            
-            modal.classList.add('show');
-        }
-
-        function closeVoteSheet(forceClose = false) {
-            // Close if background is clicked or close button is clicked
-            if(forceClose === true || event.target === modal) {
-                modal.classList.remove('show');
-            }
-        }
-
-        function submitVote(choice) {
-            // Mark that user has voted
-            localStorage.setItem('hubcoinVoted', 'true');
-            localStorage.setItem('hubcoinVoteChoice', choice);
-            
-            // Show success message
-            questionBlock.style.display = 'none';
-            successBlock.style.display = 'block';
-            alreadyVotedBlock.style.display = 'none';
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
